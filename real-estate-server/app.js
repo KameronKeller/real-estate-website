@@ -12,6 +12,15 @@ const port = 3000
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
+app.get('/homes', async (req, res) => {
+  try {
+    const houses = await fetchHouses();
+    res.json(houses);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Something went wrong');
+  }
+})
 })
 
 
