@@ -2,6 +2,7 @@ export function HouseListing(props) {
 
     const { houseData } = props
 
+
     return (
         <div>
             {houseData.mls_num}
