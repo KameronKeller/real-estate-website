@@ -1,4 +1,6 @@
 const express = require('express')
+const cors = require('cors')
+const db = require('./db');
 const app = express()
 const port = 3000
 
@@ -6,7 +8,9 @@ const port = 3000
 
 // setup authentication database
 
-// async function getAllHomes() {
+app.use(cors())
+app.use(express.json());
+
 function fetchHouses() {
   return new Promise((resolve, reject) => {
     db.all('SELECT * FROM houses;', (err, rows) => {
@@ -19,7 +23,38 @@ function fetchHouses() {
   });
 }
 
-// }
+function buildSearchQuery(requestBody) {
+  let searchFields = [
+    'mls_num',
+    'city',
+    'state',
+    'zip_code',
+    'bedrooms',
+    'bathrooms',
+    'square_feet'
+  ]  
+  let query = 'SELECT * FROM houses WHERE';
+  let isFirst = true
+
+  for (var i = 0; i < searchFields.length; i++) {
+    field = searchFields[i];
+    if (requestBody[field]) {
+
+      // If it's the first search term added to the query, AND is not needed
+      if (isFirst) {
+        query += ` (${field} LIKE ?)`
+      } else {
+        query += ` AND (${field} LIKE ?)` 
+      }
+      isFirst = false;
+    }
+  }
+  query += ";";
+  console.log(query)
+  return query
+  
+}
+
 function searchHouses(req) {
   query = buildSearchQuery(req.body)
   console.log(Object.values(req.body))
@@ -34,8 +69,6 @@ function searchHouses(req) {
   });
 }
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
 app.get('/homes', async (req, res) => {
   try {
     const houses = await fetchHouses();
@@ -60,5 +93,5 @@ app.post('/homes', async (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`App listening on port ${port}`)
 })
