@@ -7,6 +7,17 @@ const port = 3000
 // setup authentication database
 
 // async function getAllHomes() {
+function fetchHouses() {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM houses;', (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
 
 // }
 function searchHouses(req) {
