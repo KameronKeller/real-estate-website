@@ -9,6 +9,8 @@ import sample_home from './assets/home_sample.json';
 import {
   Root,
   Home,
+  Login,
+  AddHome,
 } from './routes'
 
 const router = createBrowserRouter([
@@ -16,7 +18,9 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     children: [
-      { index: true, element: <Home homesData={ sample_home } /> }
+      { index: true, element: <Home homesData={ sample_home } /> },
+      { path: "login", element: <Login /> },
+      { path: "addhome", element: <AddHome /> }
     ]
   }
 ])
