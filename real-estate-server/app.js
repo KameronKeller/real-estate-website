@@ -9,6 +9,19 @@ const port = 3000
 // async function getAllHomes() {
 
 // }
+function searchHouses(req) {
+  query = buildSearchQuery(req.body)
+  console.log(Object.values(req.body))
+  return new Promise((resolve, reject) => {
+    db.all(query, Object.values(req.body), (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
