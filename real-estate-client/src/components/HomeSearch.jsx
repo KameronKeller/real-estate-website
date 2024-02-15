@@ -1,31 +1,34 @@
 export function HomeSearch() {
     return (
-        <form>
-            <label htmlFor="mls_num">MLS Number:</label><br />
-            <input type="text" id="mls_num" name="mls_num" /><br />
+        <>
+            <form>
+                <label htmlFor="mls_num">MLS Number: </label>
+                <input type="text" id="mls_num" name="mls_num" />
 
-            <label htmlFor="city">City:</label><br />
-            <input type="text" id="city" name="city" /><br />
+                <label htmlFor="city">City:</label>
+                <input type="text" id="city" name="city" />
 
-            <label htmlFor="state">State:</label><br />
-            <input type="text" id="state" name="state" /><br />
+                <label htmlFor="state">State:</label>
+                <input type="text" id="state" name="state" />
 
-            <label htmlFor="zip_code">Zip Code:</label><br />
-            <input type="text" id="zip_code" name="zip_code" /><br />
+                <label htmlFor="zip_code">Zip Code:</label>
+                <input type="text" id="zip_code" name="zip_code" />
 
-            <label htmlFor="bedrooms">Bedrooms:</label><br />
-            <input type="number" id="bedrooms" name="bedrooms" /><br />
+                <label htmlFor="bedrooms">Bedrooms:</label>
+                <input type="number" id="bedrooms" name="bedrooms" />
 
-            <label htmlFor="bathrooms">Bathrooms:</label><br />
-            <input type="number" id="bathrooms" name="bathrooms" /><br />
+                <label htmlFor="bathrooms">Bathrooms:</label>
+                <input type="number" id="bathrooms" name="bathrooms" />
 
-            <label htmlFor="square_feet_min">Min Square Feet:</label><br />
-            <input type="number" id="square_feet_min" name="square_feet_min" /><br />
+                <label htmlFor="square_feet_min">Min Square Feet:</label>
+                <input type="text" id="square_feet_min" name="square_feet_min" />
 
-            <label htmlFor="square_feet_max">Max Square Feet:</label><br />
-            <input type="number" id="square_feet_max" name="square_feet_max" /><br />
+                <label htmlFor="square_feet_max">Max Square Feet:</label>
+                <input type="text" id="square_feet_max" name="square_feet_max" />
 
-            <input type="submit" value="Search" />
-        </form>
+                <p><input type="submit" value="Search" /></p>
+            </form>
+        </>
+        
     )
 }
