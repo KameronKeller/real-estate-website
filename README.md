@@ -110,13 +110,10 @@ node app.js #if production
         square_feet
         lot_size
         description
-/deletehome
+/home/{mls_num}
     method: delete
     parameters:
         mls_num
-/login
-    method: get
-    parameters: none
 /login/password
     method: post
     parameters:
