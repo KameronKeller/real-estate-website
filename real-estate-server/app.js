@@ -90,14 +90,12 @@ function buildSearchQuery(requestBody) {
     }
   }
   query += ";";
-  console.log(query)
   return query
   
 }
 
 function searchHouses(req) {
   query = buildSearchQuery(req.body)
-  console.log(Object.values(req.body))
   return new Promise((resolve, reject) => {
     db.all(query, Object.values(req.body), (err, rows) => {
       if (err) {
@@ -109,27 +107,166 @@ function searchHouses(req) {
   });
 }
 
+function editHouse(house, mls_num) {
+  // Add mls number to end for where clause
+  house.push(mls_num)
+
+  return new Promise((resolve, reject) => {
+    db.run("UPDATE houses SET \
+      mls_num = ?, \
+      street1 = ?, \
+      street2 = ?, \
+      city = ?, \
+      state = ?, \
+      zip_code = ?, \
+      neighborhood = ?, \
+      sales_price = ?, \
+      date_listed = ?, \
+      bedrooms = ?, \
+      photos = ?, \
+      bathrooms = ?, \
+      garage_size = ?, \
+      square_feet = ?, \
+      lot_size = ?, \
+      description = ? \
+      WHERE mls_num = ?;",
+          house,
+          function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(this.changes)
+            }
+          })
+
+  })
+}
+
+function addHouse(house) {
+  return new Promise((resolve, reject) => {
+    db.run("INSERT INTO houses ( \
+      mls_num, \
+      street1, \
+      street2, \
+      city, \
+      state, \
+      zip_code, \
+      neighborhood, \
+      sales_price, \
+      date_listed, \
+      bedrooms, \
+      photos, \
+      bathrooms, \
+      garage_size, \
+      square_feet, \
+      lot_size, \
+      description) \
+          VALUES ( \
+              ?,  \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ?, \
+              ? \
+          );",
+          house,
+          function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(this.changes)
+            }
+          })
+
+  })
+}
+
+function deleteHome(mls_num) {
+  return new Promise((resolve, reject) => {
+  db.all('DELETE FROM houses WHERE mls_num = ?;', mls_num, (err, rows) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(rows);
+    }
+  });
+});
+}
+
+
 app.get('/homes', async (req, res) => {
   try {
     const houses = await fetchHouses();
     res.json(houses);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Something went wrong');
+    res.status(500).send(`Error: ${err}`);
   }
 })
 
 app.post('/homes', async (req, res) => {
   try {
     const houses = await searchHouses(req)
-    console.log(houses)
     res.json(houses);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Something went wrong');
+    res.status(500).send(`Error: ${err}`);
   }
 })
 
+app.post('/home', async (req, res) => {
+  try {
+    const changes = await addHouse(Object.values(req.body.formData))
+    res.status(200).send('OK');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`Error: ${err}`);
+  }
+})
+
+app.patch('/home/:mls_num', async (req, res) => {
+  let mls_num = req.params.mls_num;
+  try {
+    const changes = await editHouse(Object.values(req.body), mls_num)
+    res.status(200).send('OK');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`Error: ${err}`);
+  }
+})
+
+app.delete('/home/:mls_num', async (req, res) => {
+  let mls_num = req.params.mls_num;
+  try {
+    const changes = await deleteHome(mls_num)
+    res.status(200).send('OK');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`Error: ${err}`);
+  }
+})
+
+app.post('/login/password', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info, status) {
+    if (err) { 
+      return res.status(500).send('An error occurred: ' + err.message); 
+    }
+    if (!user) { 
+      return res.status(401).send('Authentication failed'); 
+    }
+    res.status(200).send('Authentication successful');
+  })(req, res, next);
+});
 
 
 app.listen(port, () => {
