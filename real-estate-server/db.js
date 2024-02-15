@@ -1,7 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/realestate.db');
+const mkdirp = require('mkdirp');
 var crypto = require('crypto');
 
+// Create the db directory if it doesn't exist
+mkdirp.sync('./db');
+
+const db = new sqlite3.Database('./db/realestate.db');
 // based on the example found here: https://github.com/passport/todos-express-password/blob/master/db.js
 
 function createUser(username, password) {
