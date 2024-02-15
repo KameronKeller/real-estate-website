@@ -1,20 +1,23 @@
-import { Outlet, } from "react-router-dom";
+import { Outlet, } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
-export function Root(props) {
-    const { children } = props;
+export function Root() {
+    let navigate = useNavigate()
     return(
         <>
             <nav>
-                <p>website name</p>
-                <button>login</button>
+                <h1><a href="/">Real Estate</a></h1>
+                <button onClick={() => navigate("/addhome")}>Add Home</button>
+                <button onClick={() => navigate("/login")}>Login</button>
             </nav>
+            <hr></hr>
             <main>
-                { children || <Outlet /> }
+                { <Outlet /> }
             </main>
+            <hr></hr>
             <footer>
-                <p>footer</p>
+                <em>Real Estate Footer</em>
             </footer>
-            {/* children will display the error page if an invalid route is requested */}
             
         </>
     )
