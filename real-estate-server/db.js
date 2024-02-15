@@ -79,25 +79,27 @@ db.serialize(() => {
     )");
 
     db.run("CREATE TABLE IF NOT EXISTS houses ( \
-        mls_num INTEGER PRIMARY KEY, \
+        mls_num TEXT PRIMARY KEY, \
         street1 TEXT, \
         street2 TEXT, \
         city TEXT, \
         state TEXT, \
-        zip_code INTEGER, \
+        zip_code TEXT, \
         neighborhood TEXT, \
-        sales_price REAL, \
+        sales_price TEXT, \
         date_listed TEXT, \
         bedrooms INTEGER, \
         photos TEXT, \
-        bathrooms REAL, \
-        garage_size REAL, \
-        square_feet REAL, \
-        lot_size REAL, \
+        bathrooms TEXT, \
+        garage_size TEXT, \
+        square_feet TEXT, \
+        lot_size TEXT, \
         description TEXT \
     );")
 
     createUser("admin", "password")
+
+    // This should be removed in production, but is here to populate the database with a sample house
     createSampleHouse()
 
 })
