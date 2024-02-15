@@ -52,6 +52,7 @@ node app.js #if production
 - [ ] Stylize website
 - [ ] Test front end
 - [ ] Test back end
+- [ ] Create .env file to hold API endpoint instead of having that hardcoded
 - [ ] Refactor and clean up code
 
 ## API Description
